@@ -15,3 +15,7 @@ struct CosmicCalApp: App {
         }
     }
 }
+
+#Preview {
+    ContentView()
+}
