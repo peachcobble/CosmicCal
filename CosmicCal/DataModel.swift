@@ -19,5 +19,5 @@ struct Picture: Identifiable,Codable {
     var picture_path: String?
     var explanation: String
     var credit: String
-    var next_picture: String
+    var media_type: String
 }
