@@ -37,3 +37,7 @@ struct StartPage: View {
         .edgesIgnoringSafeArea(.bottom)
     }
 }
+
+#Preview {
+    StartPage() {}
+}
