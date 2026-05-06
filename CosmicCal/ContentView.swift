@@ -11,25 +11,19 @@ struct ContentView: View {
     @State var selectedTab = 0
     var body: some View {
         TabView(selection: $selectedTab) {
-            StartPage(selectedTab: $selectedTab)
+            StartPage() { selectedTab = 1 }
                 .tabItem {
                     Image(systemName: "house")
                     Text("Start")
                 }
                 .tag(0)
            
-            VStack {
-                Text("Main Page")
-                    .font(.title)
-               
-                Text("Calendar + NASA stuff here")
-                    .padding()
-            }
-            .tabItem {
-                Image(systemName: "calendar")
-                Text("Main")
-            }
-            .tag(1)
+            MainPage()
+                .tabItem {
+                    Image(systemName: "calendar")
+                    Text("Main")
+                }
+                .tag(1)
         }
     }
 }
