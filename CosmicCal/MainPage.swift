@@ -8,6 +8,7 @@ struct MainPage: View {
             HStack {
                 Text("CosmicCal")
                     .font(.largeTitle)
+                    .foregroundStyle(.white)
                 Spacer()
                 Button(action: {
                     
@@ -32,6 +33,8 @@ struct MainPage: View {
             .frame(maxWidth: .infinity, maxHeight: 500)
             .background{
                 RoundedRectangle(cornerRadius: 12)
+                    .foregroundStyle(.tint)
+                    .brightness(-0.15)
             }
         }
         .padding(30)
