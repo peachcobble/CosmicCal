@@ -7,6 +7,11 @@ struct StartPage: View {
     @State private var diceNumber = 1
     @State private var spinTitle = false
     
+    //animation
+    @State private var diceRotation = 0.0
+    @State private var diceScale = 1.0
+    @State private var animateButton = false
+    
     let funFacts = [
         "If you could drive to the Moon at highway speed, it would take about 6 months.",
         "A sunset on Mars appears blue instead of orange.",
@@ -94,6 +99,10 @@ struct StartPage: View {
                             .background(Color.purple)
                             .cornerRadius(20)
                             .padding(.horizontal, 40)
+                            .scaleEffect(animateButton ? 1.03 : 0.98)
+                    }
+                    .onAppear {withAnimation(.easeInOut(duration:1.2).repeatForever(autoreverses: true))
+                        {animateButton = true}
                     }
                     
                     VStack(spacing: 20) {
@@ -111,8 +120,19 @@ struct StartPage: View {
                             .font(.system(size: 70))
                         
                         Button {
-                            diceNumber = Int.random(in: 1...6)
-                        } label: {
+                            // smoother transition animation
+                            withAnimation(.linear(duration: 0.15)) {
+                                diceScale = 0.7
+                                diceRotation += 180
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                                    diceNumber = Int.random(in: 1...6)
+                                    diceScale = 1.0
+                                    diceRotation += 180
+                                }
+                            }
+                            } label: {
                             Text("Roll Dice")
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
