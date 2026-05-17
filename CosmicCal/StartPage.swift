@@ -6,6 +6,7 @@ struct StartPage: View {
     
     @State private var diceNumber = 1
     @State private var spinTitle = false
+    @State private var isScaled = false
     
     let funFacts = [
         "If you could drive to the Moon at highway speed, it would take about 6 months.",
@@ -85,7 +86,15 @@ struct StartPage: View {
                         .cornerRadius(20)
                         .padding(.horizontal)
                     
-                    Button(action: navMainPage) {
+                    Button(action: {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.4)) {
+                            isScaled.toggle()
+                        }
+                        // delay action a bit so user sees bounce
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            navMainPage()
+                        }
+                    }) {
                         Text("Start Exploring ✨")
                             .font(.headline)
                             .foregroundColor(.white)
