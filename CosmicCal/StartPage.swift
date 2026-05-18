@@ -57,10 +57,32 @@ struct StartPage: View {
                         .italic()
                     
                     // HERE we should have the picture nasa took either on the day the user opened the app or the previous day
-                    PictureView(picture: networkClient.getResults())
-                        .task {
-                            await networkClient.getAPOD()
+                    VStack {
+                        if let imageURL = URL(string: networkClient.NASAOfTheDay.hdurl) {
+                            AsyncImage(url: imageURL) { receivedImage in
+                                receivedImage
+                                    .resizable()
+                                    .scaledToFit()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(height: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .shadow(color: .black, radius: 15)
+                            .padding(.top)
+                        } else {
+                            Image(systemName: "photo")
+                                .font(.system(size: 120, weight: .ultraLight))
+                                .frame(width: 300, height: 400)
+                                .background(.blue)
+                                .shadow(color: .black, radius: 15)
+                                .cornerRadius(15)
+                                .padding(.top)
                         }
+                    }
+                    .task {
+                        try? await networkClient.getAPOD(date: networkClient.getCurrentDate())
+                    }
                     
                     VStack(spacing: 4) {
                         Text("Made by")

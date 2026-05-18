@@ -31,6 +31,22 @@ class NetworkClient {
         }
     }
     
+    func getAPOD(date: String) async throws {
+        let urlStr: String = "https://api.nasa.gov/planetary/apod?api_key=bO0O45xYdP4dzt7z8YNGFV4RVcjwSraFGIimsAjn&date=\(date)"
+        let url: URL? = URL(string: urlStr)
+        guard let urlUnwrapped = url else {
+            return
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: urlUnwrapped)
+            let apod = try JSONDecoder ().decode(NasaApod.self, from: data)
+            NASAOfTheDay = apod
+        } catch let error {
+            print (error)
+        }
+        
+    }
+    
     func dateToString(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -42,8 +58,6 @@ class NetworkClient {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: date)
-    func getResults() -> Picture {
-        return pictureDetail
     }
     
     func getWeather() async {
