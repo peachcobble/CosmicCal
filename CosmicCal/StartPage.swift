@@ -110,7 +110,7 @@ struct StartPage: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.purple)
+                            .glassEffect()
                             .cornerRadius(20)
                             .padding(.horizontal, 40)
                     }
