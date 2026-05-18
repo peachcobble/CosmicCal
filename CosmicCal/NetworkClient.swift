@@ -42,6 +42,8 @@ class NetworkClient {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: date)
+    func getResults() -> Picture {
+        return pictureDetail
     }
     
     func getWeather() async {
