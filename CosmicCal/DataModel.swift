@@ -22,6 +22,14 @@ struct Picture: Identifiable,Codable {
     var media_type: String
 }
 
+struct NasaApod: Identifiable, Codable {
+    var id: String { date }
+    var date: String
+    var explanation: String
+    var hdurl: String
+    var title: String
+}
+
 struct WeatherResponse: Codable {
 //    var page: Int
     var results: [Weather]
