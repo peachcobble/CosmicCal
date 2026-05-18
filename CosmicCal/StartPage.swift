@@ -24,23 +24,12 @@ struct StartPage: View {
     var body: some View {
         
         ScrollView {
-            
             ZStack {
-                
-                LinearGradient(
-                    colors: [
-                        Color.black,
-                        Color.purple.opacity(0.9),
-                        Color(red: 0.3, green: 0.1, blue: 0.4)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+            
                 
                 VStack(spacing: 22) {
                     
-                    Spacer()
+                    Spacer(minLength: 50)
                     
                     Text("CosmicCal")
                         .font(.system(size: 42, weight: .black, design: .rounded))
@@ -136,9 +125,12 @@ struct StartPage: View {
                         Text("Roll the dice to unlock a random space fact")
                             .foregroundColor(.white.opacity(0.8))
                             .multilineTextAlignment(.center)
+                            .frame(width: 200)
                         
                         Text("🎲 \(diceNumber)")
                             .font(.system(size: 70))
+                            .foregroundStyle(.white)
+                            .bold()
                         
                         Button {
                             diceNumber = Int.random(in: 1...6)
@@ -166,7 +158,13 @@ struct StartPage: View {
                             .cornerRadius(20)
                             .padding(.horizontal)
                     }
-                    .padding(.top, 50)
+                    .padding([.top, .bottom], 20)
+                    .background{
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundStyle(.tint)
+                            .opacity(0.3)
+                            .brightness(-0.5)
+                    }
                     
                     Spacer()
                 }
@@ -174,6 +172,16 @@ struct StartPage: View {
             }
         }
         .scrollIndicators(.hidden)
+        .background(LinearGradient(
+            colors: [
+                Color.black,
+                Color.purple.opacity(0.7),
+                Color(red: 0.3, green: 0.1, blue: 0.5)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        ))
+        .ignoresSafeArea()
     }
 }
 
