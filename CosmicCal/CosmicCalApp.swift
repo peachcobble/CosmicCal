@@ -8,14 +8,19 @@
 import SwiftUI
 
 @main
-struct CosmicCalApp: App {
+struct CosmicCalApp: App{
+    
+    @State private var networkClient = NetworkClient()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(networkClient)
         }
     }
 }
 
 #Preview {
     ContentView()
+        .environment(NetworkClient())
 }
