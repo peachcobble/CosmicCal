@@ -9,9 +9,7 @@ import SwiftUI
 
 @Observable
 class NetworkClient {
-    private(set) var picture: [Picture] = []
-    private(set) var pictureDetail: Picture = Picture(id: 0, title: "", picture_path: "", explanation: "", credit: "", media_type: "")
-//    private(set) var weather: [Weather] = []
+    private(set) var pictureDetail: Picture = Picture(title: "", url: "", explanation: "", media_type: "")
     private(set) var weatherDetail: Weather = Weather(name: "", region: "", temp_c: 0.0, temp_f: 0.0, last_updated: "", feelslike_c: 0.0, feelslike_f: 0.0, uv: 0.0, change_of_rain: 0.0, change_of_snow: 0.0)
     
     func getAPOD() async {
@@ -23,12 +21,15 @@ class NetworkClient {
         do {
             let (data, _) = try await URLSession.shared.data(from: urlUnwrapped)
             let pictureOfDay: PictureResponse = try JSONDecoder ().decode(PictureResponse.self, from: data)
-            for image in pictureOfDay.results {
-                picture.append(image)
-            }
+            pictureDetail = pictureOfDay.results
+            
         } catch let error {
             print (error)
         }
+    }
+    
+    func getResults() -> Picture {
+        return pictureDetail
     }
     
     func getWeather() async {

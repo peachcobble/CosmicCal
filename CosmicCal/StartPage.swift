@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct StartPage: View {
-    
+    @Environment(NetworkClient.self) private var networkClient
     let navMainPage: () -> Void
     
     @State private var diceNumber = 1
@@ -56,19 +56,18 @@ struct StartPage: View {
                         .foregroundColor(.white.opacity(0.8))
                         .italic()
                     
-                    Image("space_placeholder") // HERE we should have the picture nasa took either on the day the user opened the app or the previous day
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 320, height: 240)
-                        .clipShape(RoundedRectangle(cornerRadius: 30))
-                        .shadow(color: .purple.opacity(0.5), radius: 12)
+                    // HERE we should have the picture nasa took either on the day the user opened the app or the previous day
+                    PictureView(picture: networkClient.getResults())
+                        .task {
+                            await networkClient.getAPOD()
+                        }
                     
                     VStack(spacing: 4) {
                         Text("Made by")
                             .foregroundColor(.white.opacity(0.7))
                             .font(.caption)
                         
-                        Text("Sherry, Zahra, Ysa")
+                        Text("Sherry, Zahraa, Ysa")
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                         
@@ -158,4 +157,5 @@ struct StartPage: View {
 
 #Preview {
     StartPage() {}
+        .environment(NetworkClient())
 }
