@@ -136,21 +136,29 @@ struct StartPage: View {
                             .multilineTextAlignment(.center)
                             .frame(width: 200)
                         
-                        Text("🎲 \(diceNumber)")
-                            .font(.system(size: 70))
-                            .foregroundStyle(.white)
-                            .bold()
+                        HStack {
+                            Text("🎲")
+                                .font(.system(size: 70))
+                                .foregroundStyle(.white)
+                                .bold()
+                                .rotationEffect(.degrees(diceRotation))
+                                .scaleEffect(animateButton ? 1.0 : 1.1)
+                            Text("\(diceNumber)")
+                                .font(.system(size: 70))
+                                .foregroundStyle(.white)
+                                .bold()
+                        }
                         
                         Button {
                             // smoother transition animation
                             withAnimation(.linear(duration: 0.15)) {
-                                diceScale = 0.7
+                                animateButton.toggle()
                                 diceRotation += 180
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
                                     diceNumber = Int.random(in: 1...6)
-                                    diceScale = 1.0
+                                    animateButton.toggle()
                                     diceRotation += 180
                                 }
                             }
