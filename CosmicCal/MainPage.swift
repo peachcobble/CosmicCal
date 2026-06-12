@@ -9,24 +9,9 @@ struct MainPage: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                HStack {
-                    Text("CosmicCal")
-                        .font(.largeTitle)
-                        .foregroundStyle(.white)
-                    Spacer()
-                    NavigationLink(destination: CalendarPage(date: $selectedDate)) {
-                        Image(systemName: calendarIcon)
-                            .frame(maxWidth: 45, maxHeight: 45)
-                            .background {
-                                RoundedRectangle(cornerRadius: 12)
-                            }
-                            .font(.largeTitle)
-                            .tint(.accentColor)
-                            .opacity(0.25)
-                            .brightness(-2)
-                    }
-                }
+            ZStack {
+               Color(.tintColor)
+                  .ignoresSafeArea()
                 VStack {
                     Text(networkClient.NASAOfTheDay.title)
                         .font(.title)
@@ -34,6 +19,30 @@ struct MainPage: View {
                         .frame(height: 10)
                     Text("Date: \(networkClient.NASAOfTheDay.date)")
                     HStack {
+                        Text("CosmicCal")
+                            .fontWeight(.bold)
+                            .font(.largeTitle)
+                            .foregroundStyle(.white)
+                        Spacer()
+                        NavigationLink(destination: CalendarPage(date: $selectedDate)) {
+                            Image(systemName: calendarIcon)
+                                .tint(.white)
+                                .frame(maxWidth: 45, maxHeight: 45)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .tint(.accentColor)
+                                        .opacity(0.25)
+                                        .brightness(-2)
+                                }
+                                .font(.largeTitle)
+                        }
+                    }
+                    VStack {
+                        Text(networkClient.NASAOfTheDay.title)
+                            .font(.title)
+                        Spacer()
+                            .frame(height: 10)
+                        Text("Date: \(networkClient.NASAOfTheDay.date)")
                         if let imageURL = URL(string: networkClient.NASAOfTheDay.hdurl) {
                             AsyncImage(url: imageURL) { receivedImage in
                                 receivedImage
@@ -116,12 +125,20 @@ struct MainPage: View {
                     try? await networkClient.getAPOD(date: selectedDate)
                     try? await networkClient.getMoonPhase(date: selectedDate)
                 }
+                .onChange(of: selectedDate) {
+                    Task {
+                        try? await networkClient.getAPOD(date: selectedDate)
+                    }
+                }
+                .padding(30)
+    //            .background {
+    //                RoundedRectangle(cornerRadius: 12)
+    //                    .foregroundStyle(.tint)
+    //            }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
             }
-            .padding(30)
-            .background {
-                RoundedRectangle(cornerRadius: 12)
-                    .foregroundStyle(.tint)
-            }
+            
         }
     }
 }

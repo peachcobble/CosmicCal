@@ -8,6 +8,11 @@ struct StartPage: View {
     @State private var spinTitle = false
     @State private var isScaled = false
     
+    //animation
+    @State private var diceRotation = 0.0
+    @State private var diceScale = 1.0
+    @State private var animateButton = false
+    
     let funFacts = [
         "If you could drive to the Moon at highway speed, it would take about 6 months.",
         "A sunset on Mars appears blue instead of orange.",
@@ -24,23 +29,12 @@ struct StartPage: View {
     var body: some View {
         
         ScrollView {
-            
             ZStack {
-                
-                LinearGradient(
-                    colors: [
-                        Color.black,
-                        Color.purple.opacity(0.9),
-                        Color(red: 0.3, green: 0.1, blue: 0.4)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+            
                 
                 VStack(spacing: 22) {
                     
-                    Spacer()
+                    Spacer(minLength: 50)
                     
                     Text("CosmicCal")
                         .font(.system(size: 42, weight: .black, design: .rounded))
@@ -121,9 +115,13 @@ struct StartPage: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.purple)
+                            .glassEffect()
                             .cornerRadius(20)
                             .padding(.horizontal, 40)
+                            .scaleEffect(animateButton ? 1.03 : 0.98)
+                    }
+                    .onAppear {withAnimation(.easeInOut(duration:1.2).repeatForever(autoreverses: true))
+                        {animateButton = true}
                     }
                     
                     VStack(spacing: 20) {
@@ -136,13 +134,35 @@ struct StartPage: View {
                         Text("Roll the dice to unlock a random space fact")
                             .foregroundColor(.white.opacity(0.8))
                             .multilineTextAlignment(.center)
+                            .frame(width: 200)
                         
-                        Text("🎲 \(diceNumber)")
-                            .font(.system(size: 70))
+                        HStack {
+                            Text("🎲")
+                                .font(.system(size: 70))
+                                .foregroundStyle(.white)
+                                .bold()
+                                .rotationEffect(.degrees(diceRotation))
+                                .scaleEffect(animateButton ? 1.0 : 1.1)
+                            Text("\(diceNumber)")
+                                .font(.system(size: 70))
+                                .foregroundStyle(.white)
+                                .bold()
+                        }
                         
                         Button {
-                            diceNumber = Int.random(in: 1...6)
-                        } label: {
+                            // smoother transition animation
+                            withAnimation(.linear(duration: 0.15)) {
+                                animateButton.toggle()
+                                diceRotation += 180
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                                    diceNumber = Int.random(in: 1...6)
+                                    animateButton.toggle()
+                                    diceRotation += 180
+                                }
+                            }
+                            } label: {
                             Text("Roll Dice")
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
@@ -166,7 +186,13 @@ struct StartPage: View {
                             .cornerRadius(20)
                             .padding(.horizontal)
                     }
-                    .padding(.top, 50)
+                    .padding([.top, .bottom], 20)
+                    .background{
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundStyle(.tint)
+                            .opacity(0.3)
+                            .brightness(-0.5)
+                    }
                     
                     Spacer()
                 }
@@ -174,6 +200,16 @@ struct StartPage: View {
             }
         }
         .scrollIndicators(.hidden)
+        .background(LinearGradient(
+            colors: [
+                Color.black,
+                Color.purple.opacity(0.7),
+                Color(red: 0.3, green: 0.1, blue: 0.5)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        ))
+        .ignoresSafeArea()
     }
 }
 

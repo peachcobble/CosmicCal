@@ -32,8 +32,8 @@
 		3F4E5D792FAA6AED00AC2FC4 = {
 			isa = PBXGroup;
 			children = (
-				3F4E5D842FAA6AED00AC2FC4 /* CosmicCal */,
 				3F4E5D832FAA6AED00AC2FC4 /* Products */,
+				3F4E5D842FAA6AED00AC2FC4 /* CosmicCal */,
 			);
 			sourceTree = "<group>";
 		};
