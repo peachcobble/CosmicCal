@@ -17,7 +17,7 @@ struct CalendarPage: View {
                 .font(.largeTitle)
             DatePicker("Enter your birthday",
                        selection: $date,
-                       displayedComponents: [.date])
+                       displayedComponents: [.date, .hourAndMinute])
                 .datePickerStyle(GraphicalDatePickerStyle())
                 .frame(maxHeight: 400)
             Button("Done") {

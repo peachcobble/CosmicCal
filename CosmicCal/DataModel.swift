@@ -13,7 +13,6 @@ struct PictureResponse: Codable {
 }
 
 struct Picture: Codable {
-//    var id: Int - Identifiable,
     var title: String
     var url: String?
     var explanation: String
@@ -43,4 +42,16 @@ struct Weather: Codable {
     var uv: Double
     var change_of_rain: Double
     var change_of_snow: Double
+}
+
+struct MoonResponse: Decodable {
+    let image: MoonImage
+    let phase: Double
+    let age: Double
+}
+
+struct MoonImage: Decodable {
+    let url: String
+    let width: Int
+    let height: Int
 }
